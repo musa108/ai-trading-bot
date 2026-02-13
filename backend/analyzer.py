@@ -7,16 +7,27 @@ except ImportError:
 
 class SentimentAnalyzer:
     def __init__(self):
-        if ML_AVAILABLE:
+        self.nlp = None
+        # Check if we should use the heavy ML model (can cause OOM on small servers)
+        self.use_ml = os.getenv('USE_ML_ANALYSIS', 'true').lower() == 'true'
+        
+        if ML_AVAILABLE and self.use_ml:
             try:
+                print("🧠 Loading Sentiment Model (FinBERT)...")
                 # FinBERT is specifically trained for financial sentiment
                 self.tokenizer = BertTokenizer.from_pretrained('yiyanghkust/finbert-tone')
                 self.model = BertForSequenceClassification.from_pretrained('yiyanghkust/finbert-tone')
                 self.nlp = pipeline("sentiment-analysis", model=self.model, tokenizer=self.tokenizer)
-            except Exception:
+                print("✅ Model loaded successfully")
+            except Exception as e:
+                print(f"⚠️ Could not load ML model (likely OOM): {e}")
+                print("🔄 Falling back to Keyword Analysis")
                 self.nlp = None
         else:
-            self.nlp = None
+            if not self.use_ml:
+                print("ℹ️ ML Analysis disabled via environment variable")
+            else:
+                print("ℹ️ ML libraries not installed. Using Keyword Analysis.")
 
     def analyze_news(self, text_list):
         if not text_list:

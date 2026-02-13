@@ -15,3 +15,6 @@ startCommand = "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
 healthcheckPath = "/portfolio/status"
 restartPolicy = "on-failure"
 maxRetries = 10
+
+[deploy.variables]
+USE_ML_ANALYSIS = "false"

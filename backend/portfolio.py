@@ -26,8 +26,12 @@ class Portfolio:
     
     def save_trades(self):
         """Save trade history to file"""
-        with open(self.trades_file, 'w') as f:
-            json.dump(self.trades, f, indent=2)
+        try:
+            with open(self.trades_file, 'w') as f:
+                json.dump(self.trades, f, indent=2)
+        except Exception as e:
+            print(f"⚠️ Warning: Could not save trade history to file: {e}")
+            print("Ensure the directory is writable or using a persistent volume.")
     
     def log_trade(self, trade_data: Dict):
         """
