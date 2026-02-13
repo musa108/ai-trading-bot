@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+requests
+pandas
+pandas-ta
+transformers
+torch
+python-dotenv
+alpha_vantage
+pycoingecko
+scikit-learn
+alpaca-py
+web3
+pytz
