@@ -1,8 +1,14 @@
 # Railway Configuration for Monorepo
-# This file tells Railway how to build and start your backend from the root folder.
+# This forces Railway to recognize this as a Python project even from the root.
 
 [build]
 builder = "NIXPACKS"
+
+[phases.setup]
+nixPkgs = ["python311"]
+
+[phases.install]
+cmds = ["pip install -r backend/requirements.txt"]
 
 [deploy]
 startCommand = "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
