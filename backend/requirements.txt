@@ -4,6 +4,7 @@ requests
 pandas
 pandas-ta
 transformers
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch
 python-dotenv
 alpha_vantage
