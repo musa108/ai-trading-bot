@@ -30,26 +30,16 @@ app.add_middleware(
 )
 
 # Initialize trading components
-try:
-    print("🚀 Initializing components...")
-    scanner = MarketScanner()
-    analyzer = SentimentAnalyzer()
-    risk_manager = RiskManager()
-    wallet_manager = WalletManager()
-    portfolio = Portfolio()
-    
-    executor = TradingExecutor(risk_manager, wallet_manager)
-    auto_agent = AutoAgent(executor, wallet_manager, portfolio)
-    print("✅ All components initialized successfully")
-except Exception as e:
-    print(f"❌ CRITICAL ERROR during initialization: {e}")
-    # Fallbacks to prevent total crash
-    executor = None
-    auto_agent = None
-    # If these failed, we still want the API to start so the user can see the error
-    if 'risk_manager' not in locals(): risk_manager = None
-    if 'wallet_manager' not in locals(): wallet_manager = None
-    if 'portfolio' not in locals(): portfolio = None
+print("🚀 Initializing components...")
+scanner = MarketScanner()
+analyzer = SentimentAnalyzer()
+risk_manager = RiskManager()
+wallet_manager = WalletManager()
+portfolio = Portfolio()
+
+executor = TradingExecutor(risk_manager, wallet_manager)
+auto_agent = AutoAgent(executor, wallet_manager, portfolio)
+print("✅ All components initialized successfully")
 
 @app.on_event("startup")
 async def startup_event():

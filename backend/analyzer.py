@@ -1,3 +1,4 @@
+import os
 try:
     from transformers import BertTokenizer, BertForSequenceClassification, pipeline
     import torch

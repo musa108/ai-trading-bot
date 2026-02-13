@@ -21,6 +21,8 @@ class TradingExecutor:
         self.api_key = os.getenv('ALPACA_API_KEY')
         self.secret_key = os.getenv('ALPACA_SECRET_KEY')
         self.base_url = os.getenv('ALPACA_BASE_URL', 'https://paper-api.alpaca.markets')
+        self.risk_manager = risk_manager
+        self.is_trading = False
         self.wallet_manager = wallet_manager
         
         if not self.api_key or not self.secret_key:
@@ -35,9 +37,6 @@ class TradingExecutor:
         self.trading_client = TradingClient(self.api_key, self.secret_key, paper=is_paper)
         self.data_client = StockHistoricalDataClient(self.api_key, self.secret_key)
         self.crypto_data_client = CryptoHistoricalDataClient(self.api_key, self.secret_key)
-        
-        self.risk_manager = risk_manager
-        self.is_trading = False
         
         print(f"Trading Executor initialized (Paper Trading: {self.base_url})")
     
