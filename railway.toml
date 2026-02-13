@@ -1,5 +1,5 @@
 # Railway Configuration for Monorepo
-# This forces Railway to recognize this as a Python project even from the root.
+# This setup works from the root by explicitly defining the path to the backend.
 
 [build]
 builder = "NIXPACKS"
@@ -14,4 +14,4 @@ cmds = ["pip install -r backend/requirements.txt"]
 startCommand = "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
 healthcheckPath = "/portfolio/status"
 restartPolicy = "on-failure"
-maxRetries = 5
+maxRetries = 10
