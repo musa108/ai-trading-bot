@@ -12,14 +12,26 @@ class RiskManager:
     """
     
     def __init__(self):
-        self.initial_capital = float(os.getenv('INITIAL_CAPITAL', 10000))
+        def get_env_float(key, default):
+            val = os.getenv(key)
+            if not val or val.strip() == "":
+                return default
+            try:
+                # Remove common symbols like % or $ that users might include
+                clean_val = val.replace('%', '').replace('$', '').strip()
+                return float(clean_val)
+            except ValueError:
+                print(f"⚠️ Warning: Invalid value for {key}: '{val}'. Using default: {default}")
+                return default
+
+        self.initial_capital = get_env_float('INITIAL_CAPITAL', 10000.0)
         # STRICTER LIMITS FOR REAL MONEY
-        self.max_daily_loss_pct = float(os.getenv('MAX_DAILY_LOSS_PCT', 2.0)) # Hard stop
-        self.max_position_size_pct = float(os.getenv('MAX_POSITION_SIZE_PCT', 5.0)) # Reduced to 5% max
-        self.max_stop_loss_pct = float(os.getenv('MAX_STOP_LOSS_PCT', 3.0)) # Tighter stop loss (3%)
+        self.max_daily_loss_pct = get_env_float('MAX_DAILY_LOSS_PCT', 2.0)
+        self.max_position_size_pct = get_env_float('MAX_POSITION_SIZE_PCT', 5.0)
+        self.max_stop_loss_pct = get_env_float('MAX_STOP_LOSS_PCT', 3.0)
         
         # Track daily performance
-        self.daily_start_capital: Optional[float] = None
+        self.daily_start_capital = None
         self.daily_pnl = 0.0
         self.last_reset_date = datetime.now().date()
         

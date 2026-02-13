@@ -24,7 +24,11 @@ class TradingExecutor:
         self.wallet_manager = wallet_manager
         
         if not self.api_key or not self.secret_key:
-            raise ValueError("Alpaca API credentials not found in .env file")
+            print("⚠️ Warning: Alpaca API credentials not found. Trading functionality will be limited.")
+            self.trading_client = None
+            self.data_client = None
+            self.crypto_data_client = None
+            return
         
         # Initialize Alpaca clients
         is_paper = "paper" in self.base_url
